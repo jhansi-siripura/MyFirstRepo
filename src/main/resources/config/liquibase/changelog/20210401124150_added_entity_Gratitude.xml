@@ -14,6 +14,9 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="grateful_note" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="created_date" type="date">
                 <constraints nullable="false" />
             </column>
@@ -22,9 +25,6 @@
             </column>
             <column name="achieved" type="boolean">
                 <constraints nullable="true" />
-            </column>
-            <column name="grateful_note" type="${clobType}">
-                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -46,10 +46,10 @@
                   separator=";"
                   tableName="gratitude">
             <column name="id" type="numeric"/>
+            <column name="grateful_note" type="string"/>
             <column name="created_date" type="date"/>
             <column name="loved" type="boolean"/>
             <column name="achieved" type="boolean"/>
-            <column name="grateful_note" type="clob"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

@@ -2,6 +2,11 @@
   "name": "Gratitude",
   "fields": [
     {
+      "fieldName": "gratefulNote",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "createdDate",
       "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
@@ -13,19 +18,13 @@
     {
       "fieldName": "achieved",
       "fieldType": "Boolean"
-    },
-    {
-      "fieldName": "gratefulNote",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text",
-      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [],
   "entityTableName": "gratitude",
   "dto": "no",
   "pagination": "pagination",
-  "service": "no",
+  "service": "serviceImpl",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,

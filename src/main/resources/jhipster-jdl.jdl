@@ -13,6 +13,49 @@ entity TradeWish {
     pickedDate LocalDate required
 }
 
+entity TradeSuggestion {
+	action TradeAction,
+    tradeInPrice Integer,
+    minTradeOutPrice Integer,
+    minProfitPoints Integer,
+    betterTradeoutPrice Integer,
+    betterTradeOutProfitPoints Integer,
+    actualTradeoutPrice Integer,
+    actualProfitPoints Integer,
+    slPoints Integer,
+    tradeStatus TradeStatus,
+    tradeResults TradeResult,
+    tradeInTime ZonedDateTime,
+    tradeOutTime ZonedDateTime,
+    tradeDuration Integer,
+    tradeDate LocalDate,
+    tradeSuggestionTime Instant,
+    tradeType TradeType,
+    actualPL Integer,
+    slPrice Integer,
+    currentMarketPrice Integer
+}
 
-paginate Gratitude with pagination
+enum TradeAction {
+    BUY, SELL, WAIT
+}
+
+enum TradeStatus {
+     PENDING, EXECUTED, COMPLETED
+}
+
+enum TradeResult {
+    SUCCESS, FAILURE, NEUTRAL
+}
+
+enum TradeType {
+    NRML, MIS, CO
+}
+
+
+
+
+paginate Gratitude, TradeSuggestion with pagination
 paginate TradeWish with infinite-scroll
+
+service all with serviceImpl

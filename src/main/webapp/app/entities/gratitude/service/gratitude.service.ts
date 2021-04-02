@@ -16,7 +16,6 @@ export type EntityArrayResponseType = HttpResponse<IGratitude[]>;
 @Injectable({ providedIn: 'root' })
 export class GratitudeService {
   public resourceUrl = this.applicationConfigService.getEndpointFor('api/gratitudes');
-  public resourceUrl_Today = this.applicationConfigService.getEndpointFor('api/gratitudes/new');
 
   constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
@@ -51,13 +50,6 @@ export class GratitudeService {
     const options = createRequestOption(req);
     return this.http
       .get<IGratitude[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-  }
-
-  getTodaysGratitude(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http
-      .get<IGratitude[]>(this.resourceUrl_Today, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 

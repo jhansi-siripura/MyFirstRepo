@@ -2,6 +2,7 @@ package com.jan.learning.web.rest;
 
 import com.jan.learning.domain.Gratitude;
 import com.jan.learning.repository.GratitudeRepository;
+import com.jan.learning.service.GratitudeService;
 import com.jan.learning.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -30,7 +30,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class GratitudeResource {
 
     private final Logger log = LoggerFactory.getLogger(GratitudeResource.class);
@@ -40,9 +39,12 @@ public class GratitudeResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final GratitudeService gratitudeService;
+
     private final GratitudeRepository gratitudeRepository;
 
-    public GratitudeResource(GratitudeRepository gratitudeRepository) {
+    public GratitudeResource(GratitudeService gratitudeService, GratitudeRepository gratitudeRepository) {
+        this.gratitudeService = gratitudeService;
         this.gratitudeRepository = gratitudeRepository;
     }
 
@@ -59,7 +61,7 @@ public class GratitudeResource {
         if (gratitude.getId() != null) {
             throw new BadRequestAlertException("A new gratitude cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Gratitude result = gratitudeRepository.save(gratitude);
+        Gratitude result = gratitudeService.save(gratitude);
         return ResponseEntity
             .created(new URI("/api/gratitudes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -93,7 +95,7 @@ public class GratitudeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Gratitude result = gratitudeRepository.save(gratitude);
+        Gratitude result = gratitudeService.save(gratitude);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, gratitude.getId().toString()))
@@ -128,27 +130,7 @@ public class GratitudeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Gratitude> result = gratitudeRepository
-            .findById(gratitude.getId())
-            .map(
-                existingGratitude -> {
-                    if (gratitude.getCreatedDate() != null) {
-                        existingGratitude.setCreatedDate(gratitude.getCreatedDate());
-                    }
-                    if (gratitude.getLoved() != null) {
-                        existingGratitude.setLoved(gratitude.getLoved());
-                    }
-                    if (gratitude.getAchieved() != null) {
-                        existingGratitude.setAchieved(gratitude.getAchieved());
-                    }
-                    if (gratitude.getGratefulNote() != null) {
-                        existingGratitude.setGratefulNote(gratitude.getGratefulNote());
-                    }
-
-                    return existingGratitude;
-                }
-            )
-            .map(gratitudeRepository::save);
+        Optional<Gratitude> result = gratitudeService.partialUpdate(gratitude);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -165,22 +147,7 @@ public class GratitudeResource {
     @GetMapping("/gratitudes")
     public ResponseEntity<List<Gratitude>> getAllGratitudes(Pageable pageable) {
         log.debug("REST request to get a page of Gratitudes");
-        Page<Gratitude> page = gratitudeRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /gratitudes/today} : get all the gratitudes of today.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of gratitudes in body.
-     */
-    @GetMapping("/gratitudes/today")
-    public ResponseEntity<List<Gratitude>> getAllGratitudesToday(Pageable pageable) {
-        log.debug("REST request to get a page of Gratitudes of today");
-        //   gratitudeRepository.findById()
-        Page<Gratitude> page = gratitudeRepository.findAll(pageable);
+        Page<Gratitude> page = gratitudeService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -194,7 +161,7 @@ public class GratitudeResource {
     @GetMapping("/gratitudes/{id}")
     public ResponseEntity<Gratitude> getGratitude(@PathVariable Long id) {
         log.debug("REST request to get Gratitude : {}", id);
-        Optional<Gratitude> gratitude = gratitudeRepository.findById(id);
+        Optional<Gratitude> gratitude = gratitudeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(gratitude);
     }
 
@@ -207,7 +174,7 @@ public class GratitudeResource {
     @DeleteMapping("/gratitudes/{id}")
     public ResponseEntity<Void> deleteGratitude(@PathVariable Long id) {
         log.debug("REST request to delete Gratitude : {}", id);
-        gratitudeRepository.deleteById(id);
+        gratitudeService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

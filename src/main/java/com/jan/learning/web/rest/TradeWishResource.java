@@ -2,6 +2,7 @@ package com.jan.learning.web.rest;
 
 import com.jan.learning.domain.TradeWish;
 import com.jan.learning.repository.TradeWishRepository;
+import com.jan.learning.service.TradeWishService;
 import com.jan.learning.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -30,7 +30,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class TradeWishResource {
 
     private final Logger log = LoggerFactory.getLogger(TradeWishResource.class);
@@ -40,9 +39,12 @@ public class TradeWishResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final TradeWishService tradeWishService;
+
     private final TradeWishRepository tradeWishRepository;
 
-    public TradeWishResource(TradeWishRepository tradeWishRepository) {
+    public TradeWishResource(TradeWishService tradeWishService, TradeWishRepository tradeWishRepository) {
+        this.tradeWishService = tradeWishService;
         this.tradeWishRepository = tradeWishRepository;
     }
 
@@ -59,7 +61,7 @@ public class TradeWishResource {
         if (tradeWish.getId() != null) {
             throw new BadRequestAlertException("A new tradeWish cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        TradeWish result = tradeWishRepository.save(tradeWish);
+        TradeWish result = tradeWishService.save(tradeWish);
         return ResponseEntity
             .created(new URI("/api/trade-wishes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -93,7 +95,7 @@ public class TradeWishResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        TradeWish result = tradeWishRepository.save(tradeWish);
+        TradeWish result = tradeWishService.save(tradeWish);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, tradeWish.getId().toString()))
@@ -128,24 +130,7 @@ public class TradeWishResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<TradeWish> result = tradeWishRepository
-            .findById(tradeWish.getId())
-            .map(
-                existingTradeWish -> {
-                    if (tradeWish.getTradeWishNote() != null) {
-                        existingTradeWish.setTradeWishNote(tradeWish.getTradeWishNote());
-                    }
-                    if (tradeWish.getPicked() != null) {
-                        existingTradeWish.setPicked(tradeWish.getPicked());
-                    }
-                    if (tradeWish.getPickedDate() != null) {
-                        existingTradeWish.setPickedDate(tradeWish.getPickedDate());
-                    }
-
-                    return existingTradeWish;
-                }
-            )
-            .map(tradeWishRepository::save);
+        Optional<TradeWish> result = tradeWishService.partialUpdate(tradeWish);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -162,7 +147,7 @@ public class TradeWishResource {
     @GetMapping("/trade-wishes")
     public ResponseEntity<List<TradeWish>> getAllTradeWishes(Pageable pageable) {
         log.debug("REST request to get a page of TradeWishes");
-        Page<TradeWish> page = tradeWishRepository.findAll(pageable);
+        Page<TradeWish> page = tradeWishService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -176,7 +161,7 @@ public class TradeWishResource {
     @GetMapping("/trade-wishes/{id}")
     public ResponseEntity<TradeWish> getTradeWish(@PathVariable Long id) {
         log.debug("REST request to get TradeWish : {}", id);
-        Optional<TradeWish> tradeWish = tradeWishRepository.findById(id);
+        Optional<TradeWish> tradeWish = tradeWishService.findOne(id);
         return ResponseUtil.wrapOrNotFound(tradeWish);
     }
 
@@ -189,7 +174,7 @@ public class TradeWishResource {
     @DeleteMapping("/trade-wishes/{id}")
     public ResponseEntity<Void> deleteTradeWish(@PathVariable Long id) {
         log.debug("REST request to delete TradeWish : {}", id);
-        tradeWishRepository.deleteById(id);
+        tradeWishService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
