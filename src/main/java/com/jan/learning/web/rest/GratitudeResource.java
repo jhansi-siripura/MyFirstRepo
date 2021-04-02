@@ -132,9 +132,6 @@ public class GratitudeResource {
             .findById(gratitude.getId())
             .map(
                 existingGratitude -> {
-                    if (gratitude.getGratefulNote() != null) {
-                        existingGratitude.setGratefulNote(gratitude.getGratefulNote());
-                    }
                     if (gratitude.getCreatedDate() != null) {
                         existingGratitude.setCreatedDate(gratitude.getCreatedDate());
                     }
@@ -143,6 +140,9 @@ public class GratitudeResource {
                     }
                     if (gratitude.getAchieved() != null) {
                         existingGratitude.setAchieved(gratitude.getAchieved());
+                    }
+                    if (gratitude.getGratefulNote() != null) {
+                        existingGratitude.setGratefulNote(gratitude.getGratefulNote());
                     }
 
                     return existingGratitude;
@@ -165,6 +165,21 @@ public class GratitudeResource {
     @GetMapping("/gratitudes")
     public ResponseEntity<List<Gratitude>> getAllGratitudes(Pageable pageable) {
         log.debug("REST request to get a page of Gratitudes");
+        Page<Gratitude> page = gratitudeRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /gratitudes/today} : get all the gratitudes of today.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of gratitudes in body.
+     */
+    @GetMapping("/gratitudes/today")
+    public ResponseEntity<List<Gratitude>> getAllGratitudesToday(Pageable pageable) {
+        log.debug("REST request to get a page of Gratitudes of today");
+        //   gratitudeRepository.findById()
         Page<Gratitude> page = gratitudeRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
