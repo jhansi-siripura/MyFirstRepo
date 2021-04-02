@@ -1,0 +1,42 @@
+{
+  "name": "Wish",
+  "fields": [
+    {
+      "fieldName": "myWishNote",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "fulfilled",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "fulfilledDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "category",
+      "fieldType": "WishCategory",
+      "fieldValues": "MISC,LOVE,FINANCES,HEALTH,HOUSEHOLD"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "wish",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210402150312"
+}

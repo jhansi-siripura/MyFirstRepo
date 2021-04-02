@@ -42,7 +42,7 @@
     "clientPackageManager": "npm",
     "clientThemeVariant": "",
     "languages": ["en", "fr"],
-    "entities": ["Gratitude", "TradeWish", "TradeSuggestion"],
-    "lastLiquibaseTimestamp": 1617368719000
+    "entities": ["Gratitude", "TradeWish", "TradeSuggestion", "Wish"],
+    "lastLiquibaseTimestamp": 1617375792000
   }
 }

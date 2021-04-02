@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="wish">
+      <h2 data-cy="wishDetailsHeading"><span>Wish</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ wish.id }}</span>
+        </dd>
+        <dt><span>My Wish Note</span></dt>
+        <dd>
+          <span>{{ wish.myWishNote }}</span>
+        </dd>
+        <dt><span>Start Date</span></dt>
+        <dd>
+          <span>{{ wish.startDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Fulfilled</span></dt>
+        <dd>
+          <span>{{ wish.fulfilled }}</span>
+        </dd>
+        <dt><span>Fulfilled Date</span></dt>
+        <dd>
+          <span>{{ wish.fulfilledDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Duration</span></dt>
+        <dd>
+          <span>{{ wish.duration }}</span>
+        </dd>
+        <dt><span>Category</span></dt>
+        <dd>
+          <span>{{ wish.category }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/wish', wish.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

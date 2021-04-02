@@ -13,6 +13,15 @@ entity TradeWish {
     pickedDate LocalDate required
 }
 
+entity Wish {
+	myWishNote String required,
+    startDate LocalDate,
+    fulfilled Boolean,
+    fulfilledDate LocalDate,
+    duration Integer,
+    category WishCategory
+}
+
 entity TradeSuggestion {
 	action TradeAction,
     tradeInPrice Integer,
@@ -52,10 +61,14 @@ enum TradeType {
     NRML, MIS, CO
 }
 
+enum WishCategory {
+    MISC,LOVE,FINANCES,HEALTH,HOUSEHOLD
+}
+
 
 
 
 paginate Gratitude, TradeSuggestion with pagination
-paginate TradeWish with infinite-scroll
+paginate TradeWish , Wish with infinite-scroll
 
 service all with serviceImpl
