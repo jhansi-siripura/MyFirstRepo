@@ -3,9 +3,11 @@ package com.jan.learning.web.rest;
 import com.jan.learning.domain.TradeSuggestion;
 import com.jan.learning.repository.TradeSuggestionRepository;
 import com.jan.learning.service.TradeSuggestionService;
+import com.jan.learning.web.rest.businesslogic.TradeSuggestionLogic;
 import com.jan.learning.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -59,6 +61,28 @@ public class TradeSuggestionResource {
         if (tradeSuggestion.getId() != null) {
             throw new BadRequestAlertException("A new tradeSuggestion cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        TradeSuggestion result = tradeSuggestionService.save(tradeSuggestion);
+        return ResponseEntity
+            .created(new URI("/api/trade-suggestions/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    @PostMapping("/trade-suggestions/suggested")
+    public ResponseEntity<TradeSuggestion> suggestedTradeSuggestion(@RequestBody TradeSuggestion tradeSuggestion)
+        throws URISyntaxException {
+        log.debug("REST request to save TradeSuggestion : {}", tradeSuggestion);
+        if (tradeSuggestion.getId() != null) {
+            throw new BadRequestAlertException("A new tradeSuggestion cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        //        tradeSuggestion.setTradeResults(TradeResult.SUCCESS);
+        //        System.out.println(tradeSuggestion.getCurrentMarketPrice());
+        //        System.out.println(tradeSuggestion);
+        LocalDate tradeDate = LocalDate.now();
+        tradeSuggestion.setTradeDate(tradeDate);
+        //TODO HERE ASK
+        TradeSuggestionLogic logic = new TradeSuggestionLogic();
+        tradeSuggestion = logic.getSuggestionFromAngel(tradeSuggestion);
         TradeSuggestion result = tradeSuggestionService.save(tradeSuggestion);
         return ResponseEntity
             .created(new URI("/api/trade-suggestions/" + result.getId()))
