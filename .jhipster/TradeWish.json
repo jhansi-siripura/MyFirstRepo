@@ -1,0 +1,30 @@
+{
+  "name": "TradeWish",
+  "fields": [
+    {
+      "fieldName": "twish",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "picked",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "pickedDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "trade_wish",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210401124151"
+}

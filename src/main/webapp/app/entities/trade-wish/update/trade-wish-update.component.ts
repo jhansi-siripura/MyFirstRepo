@@ -1,0 +1,92 @@
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+
+import * as dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+
+import { ITradeWish, TradeWish } from '../trade-wish.model';
+import { TradeWishService } from '../service/trade-wish.service';
+
+@Component({
+  selector: 'jhi-trade-wish-update',
+  templateUrl: './trade-wish-update.component.html',
+})
+export class TradeWishUpdateComponent implements OnInit {
+  isSaving = false;
+
+  editForm = this.fb.group({
+    id: [],
+    twish: [null, [Validators.required]],
+    picked: [],
+    pickedDate: [null, [Validators.required]],
+  });
+
+  constructor(protected tradeWishService: TradeWishService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ tradeWish }) => {
+      if (tradeWish.id === undefined) {
+        const today = dayjs().startOf('day');
+        tradeWish.pickedDate = today;
+      }
+
+      this.updateForm(tradeWish);
+    });
+  }
+
+  previousState(): void {
+    window.history.back();
+  }
+
+  save(): void {
+    this.isSaving = true;
+    const tradeWish = this.createFromForm();
+    if (tradeWish.id !== undefined) {
+      this.subscribeToSaveResponse(this.tradeWishService.update(tradeWish));
+    } else {
+      this.subscribeToSaveResponse(this.tradeWishService.create(tradeWish));
+    }
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITradeWish>>): void {
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
+  }
+
+  protected onSaveSuccess(): void {
+    this.previousState();
+  }
+
+  protected onSaveError(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveFinalize(): void {
+    this.isSaving = false;
+  }
+
+  protected updateForm(tradeWish: ITradeWish): void {
+    this.editForm.patchValue({
+      id: tradeWish.id,
+      twish: tradeWish.twish,
+      picked: tradeWish.picked,
+      pickedDate: tradeWish.pickedDate ? tradeWish.pickedDate.format(DATE_TIME_FORMAT) : null,
+    });
+  }
+
+  protected createFromForm(): ITradeWish {
+    return {
+      ...new TradeWish(),
+      id: this.editForm.get(['id'])!.value,
+      twish: this.editForm.get(['twish'])!.value,
+      picked: this.editForm.get(['picked'])!.value,
+      pickedDate: this.editForm.get(['pickedDate'])!.value ? dayjs(this.editForm.get(['pickedDate'])!.value, DATE_TIME_FORMAT) : undefined,
+    };
+  }
+}

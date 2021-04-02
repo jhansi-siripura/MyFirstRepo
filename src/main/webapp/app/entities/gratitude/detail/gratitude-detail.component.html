@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="gratitude">
+      <h2 data-cy="gratitudeDetailsHeading"><span>Gratitude</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ gratitude.id }}</span>
+        </dd>
+        <dt><span>Grateful Note</span></dt>
+        <dd>
+          <span>{{ gratitude.gratefulNote }}</span>
+        </dd>
+        <dt><span>Created Date</span></dt>
+        <dd>
+          <span>{{ gratitude.createdDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Loved</span></dt>
+        <dd>
+          <span>{{ gratitude.loved }}</span>
+        </dd>
+        <dt><span>Achieved</span></dt>
+        <dd>
+          <span>{{ gratitude.achieved }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/gratitude', gratitude.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

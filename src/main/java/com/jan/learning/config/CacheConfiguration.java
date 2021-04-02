@@ -48,6 +48,8 @@ public class CacheConfiguration {
             createCache(cm, com.jan.learning.domain.User.class.getName());
             createCache(cm, com.jan.learning.domain.Authority.class.getName());
             createCache(cm, com.jan.learning.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.jan.learning.domain.Gratitude.class.getName());
+            createCache(cm, com.jan.learning.domain.TradeWish.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

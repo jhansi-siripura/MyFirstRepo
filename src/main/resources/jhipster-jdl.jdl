@@ -1,0 +1,18 @@
+entity Gratitude {
+	gratefulNote String required,
+    createdDate Instant required,
+    loved Boolean,
+    achieved Boolean
+
+}
+
+
+entity TradeWish {
+	twish Integer required,
+    picked Boolean,
+    pickedDate Instant required
+}
+
+
+paginate Gratitude with pagination
+paginate TradeWish with infinite-scroll
