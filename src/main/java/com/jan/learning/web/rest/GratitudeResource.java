@@ -4,8 +4,13 @@ import com.jan.learning.domain.Gratitude;
 import com.jan.learning.repository.GratitudeRepository;
 import com.jan.learning.service.GratitudeService;
 import com.jan.learning.web.rest.errors.BadRequestAlertException;
+import com.jan.learning.web.rest.util.MyDateUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -148,6 +153,7 @@ public class GratitudeResource {
     public ResponseEntity<List<Gratitude>> getAllGratitudes(Pageable pageable) {
         log.debug("REST request to get a page of Gratitudes");
         Page<Gratitude> page = gratitudeService.findAll(pageable);
+        // Page<Gratitude> page = gratitudeRepository.findAllByAchieved(true,pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -179,5 +185,85 @@ public class GratitudeResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /gratitudes} : get all the gratitudes achieved .
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of gratitudes in body.
+     */
+    @GetMapping("/gratitudes/achieved")
+    public ResponseEntity<List<Gratitude>> getAllGratitudesAchieved(Pageable pageable) {
+        log.debug("REST request to get a page of Achieved ");
+        Page<Gratitude> page = gratitudeRepository.findAllByAchieved(true, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /gratitudes} : get all the gratitudes.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of gratitudes in body.
+     */
+    @GetMapping("/gratitudes/loved")
+    public ResponseEntity<List<Gratitude>> getAllGratitudesLoved(Pageable pageable) {
+        log.debug("REST request to get a page of Achieved ");
+        //Page<Gratitude> page = gratitudeRepository.findAllByLoved(true,pageable);
+
+        //        LocalDate startDt= LocalDate.of(2021,04, 01);
+        //        LocalDate endDt= LocalDate.of(2021,04, 10);
+
+        LocalDate firstDayofThisMonth = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate lastDayofThisMonth = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+
+        Page<Gratitude> page = gratitudeRepository.findAllByCreatedDateBetweenAndLoved(
+            firstDayofThisMonth,
+            lastDayofThisMonth,
+            true,
+            pageable
+        );
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /gratitudes} : get all the gratitudes.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of gratitudes in body.
+     */
+    @GetMapping("/gratitudes/today")
+    public ResponseEntity<List<Gratitude>> getAllGratitudesToday(Pageable pageable) {
+        log.debug("REST request to get a page of Today ");
+
+        //Date todayWithZeroTime = MyDateUtil.getDateWithoutTime(new Date());
+
+        LocalDate todayWithZeroTime = LocalDate.now();
+
+        Page<Gratitude> page = gratitudeRepository.findAllByCreatedDate(todayWithZeroTime, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /gratitudes} : get all the gratitudes.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of gratitudes in body.
+     */
+    @GetMapping("/gratitudes/yday")
+    public ResponseEntity<List<Gratitude>> getAllGratitudesYday(Pageable pageable) {
+        log.debug("REST request to get a page of Yesterday ");
+        //Date ydayWithZeroTime = MyDateUtil.getDateWithoutTime(MyDateUtil.getYesterday());
+
+        LocalDate ydayWithZeroTime = LocalDate.now().minusDays(1);
+
+        Page<Gratitude> page = gratitudeRepository.findAllByCreatedDate(ydayWithZeroTime, pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

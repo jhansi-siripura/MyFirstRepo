@@ -1,4 +1,36 @@
 <div>
+  <h2 id="page-heading" data-cy="GratitudeHeading">
+    <span>Gratitude</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="getToday()">
+        <span>Todays List</span>
+      </button>
+
+      <button class="btn btn-info mr-2" (click)="getYday()">
+        <span>Yesterdays List</span>
+      </button>
+
+      <button class="btn btn-info mr-2" (click)="getLoved()">
+        <span>Loved List</span>
+      </button>
+
+      <button class="btn btn-info mr-2" (click)="getAchieved()">
+        <span>Achievements</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-gratitude"
+        [routerLink]="['/gratitude/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Gratitude </span>
+      </button>
+    </div>
+  </h2>
+
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>

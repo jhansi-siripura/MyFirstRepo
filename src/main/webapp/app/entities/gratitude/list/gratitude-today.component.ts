@@ -10,13 +10,20 @@ import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { GratitudeService } from '../service/gratitude.service';
 import { GratitudeDeleteDialogComponent } from '../delete/gratitude-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
+import { threadId } from 'node:worker_threads';
 
 @Component({
   selector: 'jhi-gratitude-today',
   templateUrl: './gratitude-today.component.html',
 })
 export class GratitudeTodayComponent implements OnInit {
+  ACHIEVED = '/achieved';
+  LOVED = '/loved';
+  TODAY = '/today';
+  YDAY = '/yday';
+
   gratitudes?: IGratitude[];
+
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -40,7 +47,46 @@ export class GratitudeTodayComponent implements OnInit {
     const pageToLoad: number = page ?? this.page ?? 1;
 
     this.gratitudeService
-      .query({
+      .queryBy(this.ACHIEVED, {
+        page: pageToLoad - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      })
+      .subscribe(
+        (res: HttpResponse<IGratitude[]>) => {
+          this.isLoading = false;
+          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+        },
+        () => {
+          this.isLoading = false;
+          this.onError();
+        }
+      );
+  }
+
+  getLoved(): void {
+    this.loadPagByField(this.LOVED);
+  }
+
+  getAchieved(): void {
+    this.loadPagByField(this.ACHIEVED);
+  }
+
+  getToday(): void {
+    this.loadPagByField(this.TODAY);
+  }
+
+  getYday(): void {
+    this.loadPagByField(this.YDAY);
+  }
+
+  loadPagByField(byField?: string, page?: number, dontNavigate?: boolean): void {
+    this.isLoading = true;
+    const pageToLoad: number = page ?? this.page ?? 1;
+    const theField: string = byField ?? this.ACHIEVED;
+
+    this.gratitudeService
+      .queryBy(theField, {
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -58,7 +104,7 @@ export class GratitudeTodayComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.handleNavigation();
+    this.handleNavigation(this.ACHIEVED);
   }
 
   trackId(index: number, item: IGratitude): number {
@@ -96,7 +142,7 @@ export class GratitudeTodayComponent implements OnInit {
     return result;
   }
 
-  protected handleNavigation(): void {
+  protected handleNavigation(byField: string): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
       const pageNumber = page !== null ? +page : 1;
