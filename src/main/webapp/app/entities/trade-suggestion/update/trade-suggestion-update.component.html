@@ -1,0 +1,261 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-trade-suggestion-heading" data-cy="TradeSuggestionCreateUpdateHeading">Create or edit a Trade Suggestion</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_action">Action</label>
+          <select class="form-control" name="action" formControlName="action" id="field_action" data-cy="action">
+            <option [ngValue]="null"></option>
+            <option value="BUY">BUY</option>
+            <option value="SELL">SELL</option>
+            <option value="WAIT">WAIT</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_tradeInPrice">Trade In Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="tradeInPrice"
+            id="field_tradeInPrice"
+            data-cy="tradeInPrice"
+            formControlName="tradeInPrice"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_minTradeOutPrice">Min Trade Out Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="minTradeOutPrice"
+            id="field_minTradeOutPrice"
+            data-cy="minTradeOutPrice"
+            formControlName="minTradeOutPrice"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_minProfitPoints">Min Profit Points</label>
+          <input
+            type="number"
+            class="form-control"
+            name="minProfitPoints"
+            id="field_minProfitPoints"
+            data-cy="minProfitPoints"
+            formControlName="minProfitPoints"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_betterTradeoutPrice">Better Tradeout Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="betterTradeoutPrice"
+            id="field_betterTradeoutPrice"
+            data-cy="betterTradeoutPrice"
+            formControlName="betterTradeoutPrice"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_betterTradeOutProfitPoints">Better Trade Out Profit Points</label>
+          <input
+            type="number"
+            class="form-control"
+            name="betterTradeOutProfitPoints"
+            id="field_betterTradeOutProfitPoints"
+            data-cy="betterTradeOutProfitPoints"
+            formControlName="betterTradeOutProfitPoints"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_actualTradeoutPrice">Actual Tradeout Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="actualTradeoutPrice"
+            id="field_actualTradeoutPrice"
+            data-cy="actualTradeoutPrice"
+            formControlName="actualTradeoutPrice"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_actualProfitPoints">Actual Profit Points</label>
+          <input
+            type="number"
+            class="form-control"
+            name="actualProfitPoints"
+            id="field_actualProfitPoints"
+            data-cy="actualProfitPoints"
+            formControlName="actualProfitPoints"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_slPoints">Sl Points</label>
+          <input type="number" class="form-control" name="slPoints" id="field_slPoints" data-cy="slPoints" formControlName="slPoints" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_tradeStatus">Trade Status</label>
+          <select class="form-control" name="tradeStatus" formControlName="tradeStatus" id="field_tradeStatus" data-cy="tradeStatus">
+            <option [ngValue]="null"></option>
+            <option value="PENDING">PENDING</option>
+            <option value="EXECUTED">EXECUTED</option>
+            <option value="COMPLETED">COMPLETED</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_tradeResults">Trade Results</label>
+          <select class="form-control" name="tradeResults" formControlName="tradeResults" id="field_tradeResults" data-cy="tradeResults">
+            <option [ngValue]="null"></option>
+            <option value="SUCCESS">SUCCESS</option>
+            <option value="FAILURE">FAILURE</option>
+            <option value="NEUTRAL">NEUTRAL</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_tradeInTime">Trade In Time</label>
+          <div class="d-flex">
+            <input
+              id="field_tradeInTime"
+              data-cy="tradeInTime"
+              type="datetime-local"
+              class="form-control"
+              name="tradeInTime"
+              formControlName="tradeInTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_tradeOutTime">Trade Out Time</label>
+          <div class="d-flex">
+            <input
+              id="field_tradeOutTime"
+              data-cy="tradeOutTime"
+              type="datetime-local"
+              class="form-control"
+              name="tradeOutTime"
+              formControlName="tradeOutTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_tradeDuration">Trade Duration</label>
+          <input
+            type="number"
+            class="form-control"
+            name="tradeDuration"
+            id="field_tradeDuration"
+            data-cy="tradeDuration"
+            formControlName="tradeDuration"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_tradeDate">Trade Date</label>
+          <div class="input-group">
+            <input
+              id="field_tradeDate"
+              data-cy="tradeDate"
+              type="text"
+              class="form-control"
+              name="tradeDate"
+              ngbDatepicker
+              #tradeDateDp="ngbDatepicker"
+              formControlName="tradeDate"
+            />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="tradeDateDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_tradeSuggestionTime">Trade Suggestion Time</label>
+          <div class="d-flex">
+            <input
+              id="field_tradeSuggestionTime"
+              data-cy="tradeSuggestionTime"
+              type="datetime-local"
+              class="form-control"
+              name="tradeSuggestionTime"
+              formControlName="tradeSuggestionTime"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_tradeType">Trade Type</label>
+          <select class="form-control" name="tradeType" formControlName="tradeType" id="field_tradeType" data-cy="tradeType">
+            <option [ngValue]="null"></option>
+            <option value="NRML">NRML</option>
+            <option value="MIS">MIS</option>
+            <option value="CO">CO</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_actualPL">Actual PL</label>
+          <input type="number" class="form-control" name="actualPL" id="field_actualPL" data-cy="actualPL" formControlName="actualPL" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_slPrice">Sl Price</label>
+          <input type="number" class="form-control" name="slPrice" id="field_slPrice" data-cy="slPrice" formControlName="slPrice" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="field_currentMarketPrice">Current Market Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="currentMarketPrice"
+            id="field_currentMarketPrice"
+            data-cy="currentMarketPrice"
+            formControlName="currentMarketPrice"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

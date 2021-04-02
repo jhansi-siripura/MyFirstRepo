@@ -1,0 +1,100 @@
+{
+  "name": "TradeSuggestion",
+  "fields": [
+    {
+      "fieldName": "action",
+      "fieldType": "TradeAction",
+      "fieldValues": "BUY,SELL,WAIT"
+    },
+    {
+      "fieldName": "tradeInPrice",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "minTradeOutPrice",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "minProfitPoints",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "betterTradeoutPrice",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "betterTradeOutProfitPoints",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "actualTradeoutPrice",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "actualProfitPoints",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "slPoints",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "tradeStatus",
+      "fieldType": "TradeStatus",
+      "fieldValues": "PENDING,EXECUTED,COMPLETED"
+    },
+    {
+      "fieldName": "tradeResults",
+      "fieldType": "TradeResult",
+      "fieldValues": "SUCCESS,FAILURE,NEUTRAL"
+    },
+    {
+      "fieldName": "tradeInTime",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "tradeOutTime",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "tradeDuration",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "tradeDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "tradeSuggestionTime",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "tradeType",
+      "fieldType": "TradeType",
+      "fieldValues": "NRML,MIS,CO"
+    },
+    {
+      "fieldName": "actualPL",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "slPrice",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "currentMarketPrice",
+      "fieldType": "Integer"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "trade_suggestion",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210402130519"
+}

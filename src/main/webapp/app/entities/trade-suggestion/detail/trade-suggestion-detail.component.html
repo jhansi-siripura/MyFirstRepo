@@ -1,0 +1,108 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="tradeSuggestion">
+      <h2 data-cy="tradeSuggestionDetailsHeading"><span>Trade Suggestion</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.id }}</span>
+        </dd>
+        <dt><span>Action</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.action }}</span>
+        </dd>
+        <dt><span>Trade In Price</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.tradeInPrice }}</span>
+        </dd>
+        <dt><span>Min Trade Out Price</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.minTradeOutPrice }}</span>
+        </dd>
+        <dt><span>Min Profit Points</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.minProfitPoints }}</span>
+        </dd>
+        <dt><span>Better Tradeout Price</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.betterTradeoutPrice }}</span>
+        </dd>
+        <dt><span>Better Trade Out Profit Points</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.betterTradeOutProfitPoints }}</span>
+        </dd>
+        <dt><span>Actual Tradeout Price</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.actualTradeoutPrice }}</span>
+        </dd>
+        <dt><span>Actual Profit Points</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.actualProfitPoints }}</span>
+        </dd>
+        <dt><span>Sl Points</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.slPoints }}</span>
+        </dd>
+        <dt><span>Trade Status</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.tradeStatus }}</span>
+        </dd>
+        <dt><span>Trade Results</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.tradeResults }}</span>
+        </dd>
+        <dt><span>Trade In Time</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.tradeInTime | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Trade Out Time</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.tradeOutTime | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Trade Duration</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.tradeDuration }}</span>
+        </dd>
+        <dt><span>Trade Date</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.tradeDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span>Trade Suggestion Time</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.tradeSuggestionTime | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Trade Type</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.tradeType }}</span>
+        </dd>
+        <dt><span>Actual PL</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.actualPL }}</span>
+        </dd>
+        <dt><span>Sl Price</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.slPrice }}</span>
+        </dd>
+        <dt><span>Current Market Price</span></dt>
+        <dd>
+          <span>{{ tradeSuggestion.currentMarketPrice }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/trade-suggestion', tradeSuggestion.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

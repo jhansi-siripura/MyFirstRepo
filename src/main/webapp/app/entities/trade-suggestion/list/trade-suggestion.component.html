@@ -1,0 +1,136 @@
+<div>
+  <h2 id="page-heading" data-cy="TradeSuggestionHeading">
+    <span>Trade Suggestions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-trade-suggestion"
+        [routerLink]="['/trade-suggestion/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Create a new Trade Suggestion </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="tradeSuggestions?.length === 0">
+    <span>No tradeSuggestions found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="tradeSuggestions && tradeSuggestions.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="action"><span>Action</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeInPrice"><span>Trade In Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="minTradeOutPrice"><span>Min Trade Out Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="minProfitPoints"><span>Min Profit Points</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="betterTradeoutPrice"><span>Better Tradeout Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="betterTradeOutProfitPoints">
+            <span>Better Trade Out Profit Points</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="actualTradeoutPrice"><span>Actual Tradeout Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="actualProfitPoints"><span>Actual Profit Points</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="slPoints"><span>Sl Points</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeStatus"><span>Trade Status</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeResults"><span>Trade Results</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeInTime"><span>Trade In Time</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeOutTime"><span>Trade Out Time</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeDuration"><span>Trade Duration</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeDate"><span>Trade Date</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeSuggestionTime"><span>Trade Suggestion Time</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeType"><span>Trade Type</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="actualPL"><span>Actual PL</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="slPrice"><span>Sl Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="currentMarketPrice"><span>Current Market Price</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tradeSuggestion of tradeSuggestions; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/trade-suggestion', tradeSuggestion.id, 'view']">{{ tradeSuggestion.id }}</a>
+          </td>
+          <td>{{ tradeSuggestion.action }}</td>
+          <td>{{ tradeSuggestion.tradeInPrice }}</td>
+          <td>{{ tradeSuggestion.minTradeOutPrice }}</td>
+          <td>{{ tradeSuggestion.minProfitPoints }}</td>
+          <td>{{ tradeSuggestion.betterTradeoutPrice }}</td>
+          <td>{{ tradeSuggestion.betterTradeOutProfitPoints }}</td>
+          <td>{{ tradeSuggestion.actualTradeoutPrice }}</td>
+          <td>{{ tradeSuggestion.actualProfitPoints }}</td>
+          <td>{{ tradeSuggestion.slPoints }}</td>
+          <td>{{ tradeSuggestion.tradeStatus }}</td>
+          <td>{{ tradeSuggestion.tradeResults }}</td>
+          <td>{{ tradeSuggestion.tradeInTime | formatMediumDatetime }}</td>
+          <td>{{ tradeSuggestion.tradeOutTime | formatMediumDatetime }}</td>
+          <td>{{ tradeSuggestion.tradeDuration }}</td>
+          <td>{{ tradeSuggestion.tradeDate | formatMediumDate }}</td>
+          <td>{{ tradeSuggestion.tradeSuggestionTime | formatMediumDatetime }}</td>
+          <td>{{ tradeSuggestion.tradeType }}</td>
+          <td>{{ tradeSuggestion.actualPL }}</td>
+          <td>{{ tradeSuggestion.slPrice }}</td>
+          <td>{{ tradeSuggestion.currentMarketPrice }}</td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/trade-suggestion', tradeSuggestion.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/trade-suggestion', tradeSuggestion.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(tradeSuggestion)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="tradeSuggestions && tradeSuggestions.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

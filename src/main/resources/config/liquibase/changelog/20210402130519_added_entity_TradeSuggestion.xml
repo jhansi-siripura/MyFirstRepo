@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity TradeSuggestion.
+    -->
+    <changeSet id="20210402130519-1" author="jhipster">
+        <createTable tableName="trade_suggestion">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="action" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="trade_in_price" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="min_trade_out_price" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="min_profit_points" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="better_tradeout_price" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="better_trade_out_profit_points" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="actual_tradeout_price" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="actual_profit_points" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="sl_points" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="trade_status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="trade_results" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="trade_in_time" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="trade_out_time" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="trade_duration" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="trade_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="trade_suggestion_time" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="trade_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="actual_pl" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="sl_price" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="current_market_price" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+        <dropDefaultValue tableName="trade_suggestion" columnName="trade_in_time" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="trade_suggestion" columnName="trade_out_time" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="trade_suggestion" columnName="trade_suggestion_time" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20210402130519-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/trade_suggestion.csv"
+                  separator=";"
+                  tableName="trade_suggestion">
+            <column name="id" type="numeric"/>
+            <column name="action" type="string"/>
+            <column name="trade_in_price" type="numeric"/>
+            <column name="min_trade_out_price" type="numeric"/>
+            <column name="min_profit_points" type="numeric"/>
+            <column name="better_tradeout_price" type="numeric"/>
+            <column name="better_trade_out_profit_points" type="numeric"/>
+            <column name="actual_tradeout_price" type="numeric"/>
+            <column name="actual_profit_points" type="numeric"/>
+            <column name="sl_points" type="numeric"/>
+            <column name="trade_status" type="string"/>
+            <column name="trade_results" type="string"/>
+            <column name="trade_in_time" type="${datetimeType}"/>
+            <column name="trade_out_time" type="${datetimeType}"/>
+            <column name="trade_duration" type="numeric"/>
+            <column name="trade_date" type="date"/>
+            <column name="trade_suggestion_time" type="${datetimeType}"/>
+            <column name="trade_type" type="string"/>
+            <column name="actual_pl" type="numeric"/>
+            <column name="sl_price" type="numeric"/>
+            <column name="current_market_price" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>
