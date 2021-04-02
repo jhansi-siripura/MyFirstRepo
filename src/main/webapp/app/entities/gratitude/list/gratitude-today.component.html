@@ -1,0 +1,57 @@
+<div>
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="gratitudes?.length === 0">
+    <span>No gratitudes found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="gratitudes && gratitudes.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="gratefulNote"><span>Grateful Note</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="loved"><span>Loved</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="achieved"><span>Achieved</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let gratitude of gratitudes; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/gratitude', gratitude.id, 'view']">{{ gratitude.id }}</a>
+          </td>
+          <td>{{ gratitude.gratefulNote }}</td>
+          <td>
+            <fa-icon *ngIf="gratitude.loved" icon="heart" style="color: deeppink" size="2x" (click)="heartUpdate(true)"></fa-icon>
+            <fa-icon *ngIf="!gratitude.loved" icon="heart" style="color: white" size="2x"></fa-icon>
+          </td>
+          <td>
+            <fa-icon *ngIf="gratitude.achieved" icon="star" style="color: goldenrod" size="2x"></fa-icon>
+            <fa-icon *ngIf="!gratitude.achieved" icon="star" style="color: white" size="2x"></fa-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="gratitudes && gratitudes.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>
