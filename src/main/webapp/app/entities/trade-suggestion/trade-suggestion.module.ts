@@ -6,6 +6,7 @@ import { TradeSuggestionDetailComponent } from './detail/trade-suggestion-detail
 import { TradeSuggestionUpdateComponent } from './update/trade-suggestion-update.component';
 import { TradeSuggestionDeleteDialogComponent } from './delete/trade-suggestion-delete-dialog.component';
 import { TradeSuggestionRoutingModule } from './route/trade-suggestion-routing.module';
+import { TradeSuggestionAskComponent } from './update/trade-suggestion-ask.component';
 
 @NgModule({
   imports: [SharedModule, TradeSuggestionRoutingModule],
@@ -14,6 +15,7 @@ import { TradeSuggestionRoutingModule } from './route/trade-suggestion-routing.m
     TradeSuggestionDetailComponent,
     TradeSuggestionUpdateComponent,
     TradeSuggestionDeleteDialogComponent,
+    TradeSuggestionAskComponent,
   ],
   entryComponents: [TradeSuggestionDeleteDialogComponent],
 })

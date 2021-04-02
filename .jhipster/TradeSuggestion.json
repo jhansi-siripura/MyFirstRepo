@@ -83,7 +83,10 @@
     },
     {
       "fieldName": "currentMarketPrice",
-      "fieldType": "Integer"
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "1000",
+      "fieldValidateRulesMax": "9999"
     }
   ],
   "relationships": [],

@@ -3,6 +3,16 @@
     <span>Trade Suggestions</span>
 
     <div class="d-flex justify-content-end">
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-trade-suggestion"
+        [routerLink]="['/trade-suggestion/ask']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Ask Trade Suggestion </span>
+      </button>
+
       <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh List</span>

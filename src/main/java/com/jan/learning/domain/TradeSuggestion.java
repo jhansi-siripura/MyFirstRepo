@@ -9,6 +9,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -87,7 +90,10 @@ public class TradeSuggestion implements Serializable {
     @Column(name = "sl_price")
     private Integer slPrice;
 
-    @Column(name = "current_market_price")
+    @NotNull
+    @Min(value = 1000)
+    @Max(value = 9999)
+    @Column(name = "current_market_price", nullable = false)
     private Integer currentMarketPrice;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

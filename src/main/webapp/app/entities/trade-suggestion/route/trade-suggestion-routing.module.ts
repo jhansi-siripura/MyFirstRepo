@@ -5,6 +5,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
 import { TradeSuggestionComponent } from '../list/trade-suggestion.component';
 import { TradeSuggestionDetailComponent } from '../detail/trade-suggestion-detail.component';
 import { TradeSuggestionUpdateComponent } from '../update/trade-suggestion-update.component';
+import { TradeSuggestionAskComponent } from '../update/trade-suggestion-ask.component';
 import { TradeSuggestionRoutingResolveService } from './trade-suggestion-routing-resolve.service';
 
 const tradeSuggestionRoute: Routes = [
@@ -27,6 +28,14 @@ const tradeSuggestionRoute: Routes = [
   {
     path: 'new',
     component: TradeSuggestionUpdateComponent,
+    resolve: {
+      tradeSuggestion: TradeSuggestionRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'ask',
+    component: TradeSuggestionAskComponent,
     resolve: {
       tradeSuggestion: TradeSuggestionRoutingResolveService,
     },
