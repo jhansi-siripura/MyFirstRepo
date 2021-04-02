@@ -33,7 +33,7 @@
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
           <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="twish"><span>Twish</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="tradeWishNote"><span>Trade Wish Note</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="picked"><span>Picked</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="pickedDate"><span>Picked Date</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
@@ -44,9 +44,9 @@
           <td>
             <a [routerLink]="['/trade-wish', tradeWish.id, 'view']">{{ tradeWish.id }}</a>
           </td>
-          <td>{{ tradeWish.twish }}</td>
+          <td>{{ tradeWish.tradeWishNote }}</td>
           <td>{{ tradeWish.picked }}</td>
-          <td>{{ tradeWish.pickedDate | formatMediumDatetime }}</td>
+          <td>{{ tradeWish.pickedDate | formatMediumDate }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button

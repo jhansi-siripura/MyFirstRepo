@@ -1,7 +1,7 @@
 package com.jan.learning.domain;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -22,15 +22,15 @@ public class TradeWish implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "twish", nullable = false)
-    private Integer twish;
+    @Column(name = "trade_wish_note", nullable = false)
+    private Integer tradeWishNote;
 
     @Column(name = "picked")
     private Boolean picked;
 
     @NotNull
     @Column(name = "picked_date", nullable = false)
-    private Instant pickedDate;
+    private LocalDate pickedDate;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -46,17 +46,17 @@ public class TradeWish implements Serializable {
         return this;
     }
 
-    public Integer getTwish() {
-        return this.twish;
+    public Integer getTradeWishNote() {
+        return this.tradeWishNote;
     }
 
-    public TradeWish twish(Integer twish) {
-        this.twish = twish;
+    public TradeWish tradeWishNote(Integer tradeWishNote) {
+        this.tradeWishNote = tradeWishNote;
         return this;
     }
 
-    public void setTwish(Integer twish) {
-        this.twish = twish;
+    public void setTradeWishNote(Integer tradeWishNote) {
+        this.tradeWishNote = tradeWishNote;
     }
 
     public Boolean getPicked() {
@@ -72,16 +72,16 @@ public class TradeWish implements Serializable {
         this.picked = picked;
     }
 
-    public Instant getPickedDate() {
+    public LocalDate getPickedDate() {
         return this.pickedDate;
     }
 
-    public TradeWish pickedDate(Instant pickedDate) {
+    public TradeWish pickedDate(LocalDate pickedDate) {
         this.pickedDate = pickedDate;
         return this;
     }
 
-    public void setPickedDate(Instant pickedDate) {
+    public void setPickedDate(LocalDate pickedDate) {
         this.pickedDate = pickedDate;
     }
 
@@ -109,7 +109,7 @@ public class TradeWish implements Serializable {
     public String toString() {
         return "TradeWish{" +
             "id=" + getId() +
-            ", twish=" + getTwish() +
+            ", tradeWishNote=" + getTradeWishNote() +
             ", picked='" + getPicked() + "'" +
             ", pickedDate='" + getPickedDate() + "'" +
             "}";

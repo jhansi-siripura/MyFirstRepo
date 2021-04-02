@@ -5,11 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import * as dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-
 import { IGratitude, Gratitude } from '../gratitude.model';
 import { GratitudeService } from '../service/gratitude.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 
 @Component({
   selector: 'jhi-gratitude-update',
@@ -20,22 +20,40 @@ export class GratitudeUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    gratefulNote: [null, [Validators.required]],
     createdDate: [null, [Validators.required]],
     loved: [],
     achieved: [],
+    gratefulNote: [null, [Validators.required]],
   });
 
-  constructor(protected gratitudeService: GratitudeService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected dataUtils: DataUtils,
+    protected eventManager: EventManager,
+    protected gratitudeService: GratitudeService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ gratitude }) => {
-      if (gratitude.id === undefined) {
-        const today = dayjs().startOf('day');
-        gratitude.createdDate = today;
-      }
-
       this.updateForm(gratitude);
+    });
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    this.dataUtils.openFile(base64String, contentType);
+  }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: FileLoadError) =>
+        this.eventManager.broadcast(
+          new EventWithContent<AlertError>('krishnaGratitudeApp.error', { message: err.message })
+        ),
     });
   }
 
@@ -75,10 +93,10 @@ export class GratitudeUpdateComponent implements OnInit {
   protected updateForm(gratitude: IGratitude): void {
     this.editForm.patchValue({
       id: gratitude.id,
-      gratefulNote: gratitude.gratefulNote,
-      createdDate: gratitude.createdDate ? gratitude.createdDate.format(DATE_TIME_FORMAT) : null,
+      createdDate: gratitude.createdDate,
       loved: gratitude.loved,
       achieved: gratitude.achieved,
+      gratefulNote: gratitude.gratefulNote,
     });
   }
 
@@ -86,12 +104,10 @@ export class GratitudeUpdateComponent implements OnInit {
     return {
       ...new Gratitude(),
       id: this.editForm.get(['id'])!.value,
-      gratefulNote: this.editForm.get(['gratefulNote'])!.value,
-      createdDate: this.editForm.get(['createdDate'])!.value
-        ? dayjs(this.editForm.get(['createdDate'])!.value, DATE_TIME_FORMAT)
-        : undefined,
+      createdDate: this.editForm.get(['createdDate'])!.value,
       loved: this.editForm.get(['loved'])!.value,
       achieved: this.editForm.get(['achieved'])!.value,
+      gratefulNote: this.editForm.get(['gratefulNote'])!.value,
     };
   }
 }

@@ -1,7 +1,7 @@
 package com.jan.learning.domain;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -22,18 +22,18 @@ public class Gratitude implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "grateful_note", nullable = false)
-    private String gratefulNote;
-
-    @NotNull
     @Column(name = "created_date", nullable = false)
-    private Instant createdDate;
+    private LocalDate createdDate;
 
     @Column(name = "loved")
     private Boolean loved;
 
     @Column(name = "achieved")
     private Boolean achieved;
+
+    @Lob
+    @Column(name = "grateful_note", nullable = false)
+    private String gratefulNote;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -49,29 +49,16 @@ public class Gratitude implements Serializable {
         return this;
     }
 
-    public String getGratefulNote() {
-        return this.gratefulNote;
-    }
-
-    public Gratitude gratefulNote(String gratefulNote) {
-        this.gratefulNote = gratefulNote;
-        return this;
-    }
-
-    public void setGratefulNote(String gratefulNote) {
-        this.gratefulNote = gratefulNote;
-    }
-
-    public Instant getCreatedDate() {
+    public LocalDate getCreatedDate() {
         return this.createdDate;
     }
 
-    public Gratitude createdDate(Instant createdDate) {
+    public Gratitude createdDate(LocalDate createdDate) {
         this.createdDate = createdDate;
         return this;
     }
 
-    public void setCreatedDate(Instant createdDate) {
+    public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -101,6 +88,19 @@ public class Gratitude implements Serializable {
         this.achieved = achieved;
     }
 
+    public String getGratefulNote() {
+        return this.gratefulNote;
+    }
+
+    public Gratitude gratefulNote(String gratefulNote) {
+        this.gratefulNote = gratefulNote;
+        return this;
+    }
+
+    public void setGratefulNote(String gratefulNote) {
+        this.gratefulNote = gratefulNote;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -125,10 +125,10 @@ public class Gratitude implements Serializable {
     public String toString() {
         return "Gratitude{" +
             "id=" + getId() +
-            ", gratefulNote='" + getGratefulNote() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", loved='" + getLoved() + "'" +
             ", achieved='" + getAchieved() + "'" +
+            ", gratefulNote='" + getGratefulNote() + "'" +
             "}";
     }
 }

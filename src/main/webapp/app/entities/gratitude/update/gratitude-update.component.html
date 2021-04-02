@@ -12,44 +12,48 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" for="field_gratefulNote">Grateful Note</label>
-          <input
-            type="text"
-            class="form-control"
-            name="gratefulNote"
-            id="field_gratefulNote"
-            data-cy="gratefulNote"
-            formControlName="gratefulNote"
-          />
-          <div
-            *ngIf="editForm.get('gratefulNote')!.invalid && (editForm.get('gratefulNote')!.dirty || editForm.get('gratefulNote')!.touched)"
-          >
-            <small class="form-text text-danger" *ngIf="editForm.get('gratefulNote')?.errors?.required"> This field is required. </small>
+          <div class="form-group">
+            <label class="form-control-label" for="field_gratefulNote">Grateful Note</label>
+            <textarea
+              class="form-control"
+              name="gratefulNote"
+              id="field_gratefulNote"
+              data-cy="gratefulNote"
+              formControlName="gratefulNote"
+            ></textarea>
+            <div
+              *ngIf="
+                editForm.get('gratefulNote')!.invalid && (editForm.get('gratefulNote')!.dirty || editForm.get('gratefulNote')!.touched)
+              "
+            >
+              <small class="form-text text-danger" *ngIf="editForm.get('gratefulNote')?.errors?.required"> This field is required. </small>
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
           <label class="form-control-label" for="field_createdDate">Created Date</label>
-          <div class="d-flex">
+          <div class="input-group">
             <input
               id="field_createdDate"
               data-cy="createdDate"
-              type="datetime-local"
+              type="text"
               class="form-control"
               name="createdDate"
+              ngbDatepicker
+              #createdDateDp="ngbDatepicker"
               formControlName="createdDate"
-              placeholder="YYYY-MM-DD HH:mm"
             />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="createdDateDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>
           </div>
           <div *ngIf="editForm.get('createdDate')!.invalid && (editForm.get('createdDate')!.dirty || editForm.get('createdDate')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('createdDate')?.errors?.required"> This field is required. </small>
-            <small class="form-text text-danger" [hidden]="!editForm.get('createdDate')?.errors?.ZonedDateTimelocal">
-              This field should be a date and time.
-            </small>
           </div>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label class="form-control-label" for="field_loved">Loved</label>
           <input type="checkbox" class="form-check" name="loved" id="field_loved" data-cy="loved" formControlName="loved" />
         </div>
@@ -57,7 +61,7 @@
         <div class="form-group">
           <label class="form-control-label" for="field_achieved">Achieved</label>
           <input type="checkbox" class="form-check" name="achieved" id="field_achieved" data-cy="achieved" formControlName="achieved" />
-        </div>
+        </div> -->
       </div>
 
       <div>

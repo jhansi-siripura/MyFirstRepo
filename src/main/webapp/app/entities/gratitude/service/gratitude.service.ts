@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 
 import { isPresent } from 'app/core/util/operators';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IGratitude, getGratitudeIdentifier } from '../gratitude.model';
@@ -15,6 +16,7 @@ export type EntityArrayResponseType = HttpResponse<IGratitude[]>;
 @Injectable({ providedIn: 'root' })
 export class GratitudeService {
   public resourceUrl = this.applicationConfigService.getEndpointFor('api/gratitudes');
+  public resourceUrl_Today = this.applicationConfigService.getEndpointFor('api/gratitudes/new');
 
   constructor(protected http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
@@ -52,6 +54,13 @@ export class GratitudeService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  getTodaysGratitude(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IGratitude[]>(this.resourceUrl_Today, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
@@ -78,7 +87,7 @@ export class GratitudeService {
 
   protected convertDateFromClient(gratitude: IGratitude): IGratitude {
     return Object.assign({}, gratitude, {
-      createdDate: gratitude.createdDate?.isValid() ? gratitude.createdDate.toJSON() : undefined,
+      createdDate: gratitude.createdDate?.isValid() ? gratitude.createdDate.format(DATE_FORMAT) : undefined,
     });
   }
 

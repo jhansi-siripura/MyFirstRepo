@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as dayjs from 'dayjs';
 
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { ITradeWish, TradeWish } from '../trade-wish.model';
 
 import { TradeWishService } from './trade-wish.service';
@@ -26,7 +26,7 @@ describe('Service Tests', () => {
 
       elemDefault = {
         id: 0,
-        twish: 0,
+        tradeWishNote: 0,
         picked: false,
         pickedDate: currentDate,
       };
@@ -36,7 +36,7 @@ describe('Service Tests', () => {
       it('should find an element', () => {
         const returnedFromService = Object.assign(
           {
-            pickedDate: currentDate.format(DATE_TIME_FORMAT),
+            pickedDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -52,7 +52,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
-            pickedDate: currentDate.format(DATE_TIME_FORMAT),
+            pickedDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -75,9 +75,9 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            twish: 1,
+            tradeWishNote: 1,
             picked: true,
-            pickedDate: currentDate.format(DATE_TIME_FORMAT),
+            pickedDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -99,8 +99,8 @@ describe('Service Tests', () => {
       it('should partial update a TradeWish', () => {
         const patchObject = Object.assign(
           {
-            twish: 1,
-            pickedDate: currentDate.format(DATE_TIME_FORMAT),
+            tradeWishNote: 1,
+            pickedDate: currentDate.format(DATE_FORMAT),
           },
           new TradeWish()
         );
@@ -125,9 +125,9 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            twish: 1,
+            tradeWishNote: 1,
             picked: true,
-            pickedDate: currentDate.format(DATE_TIME_FORMAT),
+            pickedDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );

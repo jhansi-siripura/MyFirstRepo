@@ -132,8 +132,8 @@ public class TradeWishResource {
             .findById(tradeWish.getId())
             .map(
                 existingTradeWish -> {
-                    if (tradeWish.getTwish() != null) {
-                        existingTradeWish.setTwish(tradeWish.getTwish());
+                    if (tradeWish.getTradeWishNote() != null) {
+                        existingTradeWish.setTradeWishNote(tradeWish.getTradeWishNote());
                     }
                     if (tradeWish.getPicked() != null) {
                         existingTradeWish.setPicked(tradeWish.getPicked());

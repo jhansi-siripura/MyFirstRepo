@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.jan.learning.IntegrationTest;
 import com.jan.learning.domain.TradeWish;
 import com.jan.learning.repository.TradeWishRepository;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -31,14 +31,14 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class TradeWishResourceIT {
 
-    private static final Integer DEFAULT_TWISH = 1;
-    private static final Integer UPDATED_TWISH = 2;
+    private static final Integer DEFAULT_TRADE_WISH_NOTE = 1;
+    private static final Integer UPDATED_TRADE_WISH_NOTE = 2;
 
     private static final Boolean DEFAULT_PICKED = false;
     private static final Boolean UPDATED_PICKED = true;
 
-    private static final Instant DEFAULT_PICKED_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_PICKED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_PICKED_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_PICKED_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final String ENTITY_API_URL = "/api/trade-wishes";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -64,7 +64,7 @@ class TradeWishResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TradeWish createEntity(EntityManager em) {
-        TradeWish tradeWish = new TradeWish().twish(DEFAULT_TWISH).picked(DEFAULT_PICKED).pickedDate(DEFAULT_PICKED_DATE);
+        TradeWish tradeWish = new TradeWish().tradeWishNote(DEFAULT_TRADE_WISH_NOTE).picked(DEFAULT_PICKED).pickedDate(DEFAULT_PICKED_DATE);
         return tradeWish;
     }
 
@@ -75,7 +75,7 @@ class TradeWishResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TradeWish createUpdatedEntity(EntityManager em) {
-        TradeWish tradeWish = new TradeWish().twish(UPDATED_TWISH).picked(UPDATED_PICKED).pickedDate(UPDATED_PICKED_DATE);
+        TradeWish tradeWish = new TradeWish().tradeWishNote(UPDATED_TRADE_WISH_NOTE).picked(UPDATED_PICKED).pickedDate(UPDATED_PICKED_DATE);
         return tradeWish;
     }
 
@@ -97,7 +97,7 @@ class TradeWishResourceIT {
         List<TradeWish> tradeWishList = tradeWishRepository.findAll();
         assertThat(tradeWishList).hasSize(databaseSizeBeforeCreate + 1);
         TradeWish testTradeWish = tradeWishList.get(tradeWishList.size() - 1);
-        assertThat(testTradeWish.getTwish()).isEqualTo(DEFAULT_TWISH);
+        assertThat(testTradeWish.getTradeWishNote()).isEqualTo(DEFAULT_TRADE_WISH_NOTE);
         assertThat(testTradeWish.getPicked()).isEqualTo(DEFAULT_PICKED);
         assertThat(testTradeWish.getPickedDate()).isEqualTo(DEFAULT_PICKED_DATE);
     }
@@ -122,10 +122,10 @@ class TradeWishResourceIT {
 
     @Test
     @Transactional
-    void checkTwishIsRequired() throws Exception {
+    void checkTradeWishNoteIsRequired() throws Exception {
         int databaseSizeBeforeTest = tradeWishRepository.findAll().size();
         // set the field null
-        tradeWish.setTwish(null);
+        tradeWish.setTradeWishNote(null);
 
         // Create the TradeWish, which fails.
 
@@ -166,7 +166,7 @@ class TradeWishResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tradeWish.getId().intValue())))
-            .andExpect(jsonPath("$.[*].twish").value(hasItem(DEFAULT_TWISH)))
+            .andExpect(jsonPath("$.[*].tradeWishNote").value(hasItem(DEFAULT_TRADE_WISH_NOTE)))
             .andExpect(jsonPath("$.[*].picked").value(hasItem(DEFAULT_PICKED.booleanValue())))
             .andExpect(jsonPath("$.[*].pickedDate").value(hasItem(DEFAULT_PICKED_DATE.toString())));
     }
@@ -183,7 +183,7 @@ class TradeWishResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(tradeWish.getId().intValue()))
-            .andExpect(jsonPath("$.twish").value(DEFAULT_TWISH))
+            .andExpect(jsonPath("$.tradeWishNote").value(DEFAULT_TRADE_WISH_NOTE))
             .andExpect(jsonPath("$.picked").value(DEFAULT_PICKED.booleanValue()))
             .andExpect(jsonPath("$.pickedDate").value(DEFAULT_PICKED_DATE.toString()));
     }
@@ -207,7 +207,7 @@ class TradeWishResourceIT {
         TradeWish updatedTradeWish = tradeWishRepository.findById(tradeWish.getId()).get();
         // Disconnect from session so that the updates on updatedTradeWish are not directly saved in db
         em.detach(updatedTradeWish);
-        updatedTradeWish.twish(UPDATED_TWISH).picked(UPDATED_PICKED).pickedDate(UPDATED_PICKED_DATE);
+        updatedTradeWish.tradeWishNote(UPDATED_TRADE_WISH_NOTE).picked(UPDATED_PICKED).pickedDate(UPDATED_PICKED_DATE);
 
         restTradeWishMockMvc
             .perform(
@@ -221,7 +221,7 @@ class TradeWishResourceIT {
         List<TradeWish> tradeWishList = tradeWishRepository.findAll();
         assertThat(tradeWishList).hasSize(databaseSizeBeforeUpdate);
         TradeWish testTradeWish = tradeWishList.get(tradeWishList.size() - 1);
-        assertThat(testTradeWish.getTwish()).isEqualTo(UPDATED_TWISH);
+        assertThat(testTradeWish.getTradeWishNote()).isEqualTo(UPDATED_TRADE_WISH_NOTE);
         assertThat(testTradeWish.getPicked()).isEqualTo(UPDATED_PICKED);
         assertThat(testTradeWish.getPickedDate()).isEqualTo(UPDATED_PICKED_DATE);
     }
@@ -294,7 +294,7 @@ class TradeWishResourceIT {
         TradeWish partialUpdatedTradeWish = new TradeWish();
         partialUpdatedTradeWish.setId(tradeWish.getId());
 
-        partialUpdatedTradeWish.twish(UPDATED_TWISH).pickedDate(UPDATED_PICKED_DATE);
+        partialUpdatedTradeWish.tradeWishNote(UPDATED_TRADE_WISH_NOTE).pickedDate(UPDATED_PICKED_DATE);
 
         restTradeWishMockMvc
             .perform(
@@ -308,7 +308,7 @@ class TradeWishResourceIT {
         List<TradeWish> tradeWishList = tradeWishRepository.findAll();
         assertThat(tradeWishList).hasSize(databaseSizeBeforeUpdate);
         TradeWish testTradeWish = tradeWishList.get(tradeWishList.size() - 1);
-        assertThat(testTradeWish.getTwish()).isEqualTo(UPDATED_TWISH);
+        assertThat(testTradeWish.getTradeWishNote()).isEqualTo(UPDATED_TRADE_WISH_NOTE);
         assertThat(testTradeWish.getPicked()).isEqualTo(DEFAULT_PICKED);
         assertThat(testTradeWish.getPickedDate()).isEqualTo(UPDATED_PICKED_DATE);
     }
@@ -325,7 +325,7 @@ class TradeWishResourceIT {
         TradeWish partialUpdatedTradeWish = new TradeWish();
         partialUpdatedTradeWish.setId(tradeWish.getId());
 
-        partialUpdatedTradeWish.twish(UPDATED_TWISH).picked(UPDATED_PICKED).pickedDate(UPDATED_PICKED_DATE);
+        partialUpdatedTradeWish.tradeWishNote(UPDATED_TRADE_WISH_NOTE).picked(UPDATED_PICKED).pickedDate(UPDATED_PICKED_DATE);
 
         restTradeWishMockMvc
             .perform(
@@ -339,7 +339,7 @@ class TradeWishResourceIT {
         List<TradeWish> tradeWishList = tradeWishRepository.findAll();
         assertThat(tradeWishList).hasSize(databaseSizeBeforeUpdate);
         TradeWish testTradeWish = tradeWishList.get(tradeWishList.size() - 1);
-        assertThat(testTradeWish.getTwish()).isEqualTo(UPDATED_TWISH);
+        assertThat(testTradeWish.getTradeWishNote()).isEqualTo(UPDATED_TRADE_WISH_NOTE);
         assertThat(testTradeWish.getPicked()).isEqualTo(UPDATED_PICKED);
         assertThat(testTradeWish.getPickedDate()).isEqualTo(UPDATED_PICKED_DATE);
     }

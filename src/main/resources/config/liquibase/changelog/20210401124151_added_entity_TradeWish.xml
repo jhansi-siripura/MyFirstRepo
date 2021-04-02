@@ -14,18 +14,17 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="twish" type="integer">
+            <column name="trade_wish_note" type="integer">
                 <constraints nullable="false" />
             </column>
             <column name="picked" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="picked_date" type="${datetimeType}">
+            <column name="picked_date" type="date">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="trade_wish" columnName="picked_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -44,9 +43,9 @@
                   separator=";"
                   tableName="trade_wish">
             <column name="id" type="numeric"/>
-            <column name="twish" type="numeric"/>
+            <column name="trade_wish_note" type="numeric"/>
             <column name="picked" type="boolean"/>
-            <column name="picked_date" type="${datetimeType}"/>
+            <column name="picked_date" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

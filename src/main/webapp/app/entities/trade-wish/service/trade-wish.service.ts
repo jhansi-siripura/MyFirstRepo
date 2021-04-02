@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import * as dayjs from 'dayjs';
 
 import { isPresent } from 'app/core/util/operators';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ITradeWish, getTradeWishIdentifier } from '../trade-wish.model';
@@ -78,7 +79,7 @@ export class TradeWishService {
 
   protected convertDateFromClient(tradeWish: ITradeWish): ITradeWish {
     return Object.assign({}, tradeWish, {
-      pickedDate: tradeWish.pickedDate?.isValid() ? tradeWish.pickedDate.toJSON() : undefined,
+      pickedDate: tradeWish.pickedDate?.isValid() ? tradeWish.pickedDate.format(DATE_FORMAT) : undefined,
     });
   }
 

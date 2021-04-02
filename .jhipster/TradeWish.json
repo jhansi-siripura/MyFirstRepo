@@ -2,7 +2,7 @@
   "name": "TradeWish",
   "fields": [
     {
-      "fieldName": "twish",
+      "fieldName": "tradeWishNote",
       "fieldType": "Integer",
       "fieldValidateRules": ["required"]
     },
@@ -12,7 +12,7 @@
     },
     {
       "fieldName": "pickedDate",
-      "fieldType": "Instant",
+      "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
     }
   ],

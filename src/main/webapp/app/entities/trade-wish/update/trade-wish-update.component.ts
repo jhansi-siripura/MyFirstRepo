@@ -5,9 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import * as dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-
 import { ITradeWish, TradeWish } from '../trade-wish.model';
 import { TradeWishService } from '../service/trade-wish.service';
 
@@ -20,7 +17,7 @@ export class TradeWishUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    twish: [null, [Validators.required]],
+    tradeWishNote: [null, [Validators.required]],
     picked: [],
     pickedDate: [null, [Validators.required]],
   });
@@ -29,11 +26,6 @@ export class TradeWishUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tradeWish }) => {
-      if (tradeWish.id === undefined) {
-        const today = dayjs().startOf('day');
-        tradeWish.pickedDate = today;
-      }
-
       this.updateForm(tradeWish);
     });
   }
@@ -74,9 +66,9 @@ export class TradeWishUpdateComponent implements OnInit {
   protected updateForm(tradeWish: ITradeWish): void {
     this.editForm.patchValue({
       id: tradeWish.id,
-      twish: tradeWish.twish,
+      tradeWishNote: tradeWish.tradeWishNote,
       picked: tradeWish.picked,
-      pickedDate: tradeWish.pickedDate ? tradeWish.pickedDate.format(DATE_TIME_FORMAT) : null,
+      pickedDate: tradeWish.pickedDate,
     });
   }
 
@@ -84,9 +76,9 @@ export class TradeWishUpdateComponent implements OnInit {
     return {
       ...new TradeWish(),
       id: this.editForm.get(['id'])!.value,
-      twish: this.editForm.get(['twish'])!.value,
+      tradeWishNote: this.editForm.get(['tradeWishNote'])!.value,
       picked: this.editForm.get(['picked'])!.value,
-      pickedDate: this.editForm.get(['pickedDate'])!.value ? dayjs(this.editForm.get(['pickedDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      pickedDate: this.editForm.get(['pickedDate'])!.value,
     };
   }
 }

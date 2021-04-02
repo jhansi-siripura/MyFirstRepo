@@ -9,6 +9,7 @@ import { IGratitude } from '../gratitude.model';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { GratitudeService } from '../service/gratitude.service';
 import { GratitudeDeleteDialogComponent } from '../delete/gratitude-delete-dialog.component';
+import { DataUtils } from 'app/core/util/data-util.service';
 
 @Component({
   selector: 'jhi-gratitude',
@@ -27,6 +28,7 @@ export class GratitudeComponent implements OnInit {
   constructor(
     protected gratitudeService: GratitudeService,
     protected activatedRoute: ActivatedRoute,
+    protected dataUtils: DataUtils,
     protected router: Router,
     protected modalService: NgbModal
   ) {}
@@ -59,6 +61,14 @@ export class GratitudeComponent implements OnInit {
 
   trackId(index: number, item: IGratitude): number {
     return item.id!;
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
   }
 
   delete(gratitude: IGratitude): void {

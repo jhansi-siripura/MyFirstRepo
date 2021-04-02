@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.jan.learning.IntegrationTest;
 import com.jan.learning.domain.Gratitude;
 import com.jan.learning.repository.GratitudeRepository;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link GratitudeResource} REST controller.
@@ -31,17 +32,17 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class GratitudeResourceIT {
 
-    private static final String DEFAULT_GRATEFUL_NOTE = "AAAAAAAAAA";
-    private static final String UPDATED_GRATEFUL_NOTE = "BBBBBBBBBB";
-
-    private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_CREATED_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_CREATED_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final Boolean DEFAULT_LOVED = false;
     private static final Boolean UPDATED_LOVED = true;
 
     private static final Boolean DEFAULT_ACHIEVED = false;
     private static final Boolean UPDATED_ACHIEVED = true;
+
+    private static final String DEFAULT_GRATEFUL_NOTE = "AAAAAAAAAA";
+    private static final String UPDATED_GRATEFUL_NOTE = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/gratitudes";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -68,10 +69,10 @@ class GratitudeResourceIT {
      */
     public static Gratitude createEntity(EntityManager em) {
         Gratitude gratitude = new Gratitude()
-            .gratefulNote(DEFAULT_GRATEFUL_NOTE)
             .createdDate(DEFAULT_CREATED_DATE)
             .loved(DEFAULT_LOVED)
-            .achieved(DEFAULT_ACHIEVED);
+            .achieved(DEFAULT_ACHIEVED)
+            .gratefulNote(DEFAULT_GRATEFUL_NOTE);
         return gratitude;
     }
 
@@ -83,10 +84,10 @@ class GratitudeResourceIT {
      */
     public static Gratitude createUpdatedEntity(EntityManager em) {
         Gratitude gratitude = new Gratitude()
-            .gratefulNote(UPDATED_GRATEFUL_NOTE)
             .createdDate(UPDATED_CREATED_DATE)
             .loved(UPDATED_LOVED)
-            .achieved(UPDATED_ACHIEVED);
+            .achieved(UPDATED_ACHIEVED)
+            .gratefulNote(UPDATED_GRATEFUL_NOTE);
         return gratitude;
     }
 
@@ -108,10 +109,10 @@ class GratitudeResourceIT {
         List<Gratitude> gratitudeList = gratitudeRepository.findAll();
         assertThat(gratitudeList).hasSize(databaseSizeBeforeCreate + 1);
         Gratitude testGratitude = gratitudeList.get(gratitudeList.size() - 1);
-        assertThat(testGratitude.getGratefulNote()).isEqualTo(DEFAULT_GRATEFUL_NOTE);
         assertThat(testGratitude.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
         assertThat(testGratitude.getLoved()).isEqualTo(DEFAULT_LOVED);
         assertThat(testGratitude.getAchieved()).isEqualTo(DEFAULT_ACHIEVED);
+        assertThat(testGratitude.getGratefulNote()).isEqualTo(DEFAULT_GRATEFUL_NOTE);
     }
 
     @Test
@@ -130,23 +131,6 @@ class GratitudeResourceIT {
         // Validate the Gratitude in the database
         List<Gratitude> gratitudeList = gratitudeRepository.findAll();
         assertThat(gratitudeList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkGratefulNoteIsRequired() throws Exception {
-        int databaseSizeBeforeTest = gratitudeRepository.findAll().size();
-        // set the field null
-        gratitude.setGratefulNote(null);
-
-        // Create the Gratitude, which fails.
-
-        restGratitudeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gratitude)))
-            .andExpect(status().isBadRequest());
-
-        List<Gratitude> gratitudeList = gratitudeRepository.findAll();
-        assertThat(gratitudeList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -178,10 +162,10 @@ class GratitudeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(gratitude.getId().intValue())))
-            .andExpect(jsonPath("$.[*].gratefulNote").value(hasItem(DEFAULT_GRATEFUL_NOTE)))
             .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
             .andExpect(jsonPath("$.[*].loved").value(hasItem(DEFAULT_LOVED.booleanValue())))
-            .andExpect(jsonPath("$.[*].achieved").value(hasItem(DEFAULT_ACHIEVED.booleanValue())));
+            .andExpect(jsonPath("$.[*].achieved").value(hasItem(DEFAULT_ACHIEVED.booleanValue())))
+            .andExpect(jsonPath("$.[*].gratefulNote").value(hasItem(DEFAULT_GRATEFUL_NOTE.toString())));
     }
 
     @Test
@@ -196,10 +180,10 @@ class GratitudeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(gratitude.getId().intValue()))
-            .andExpect(jsonPath("$.gratefulNote").value(DEFAULT_GRATEFUL_NOTE))
             .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
             .andExpect(jsonPath("$.loved").value(DEFAULT_LOVED.booleanValue()))
-            .andExpect(jsonPath("$.achieved").value(DEFAULT_ACHIEVED.booleanValue()));
+            .andExpect(jsonPath("$.achieved").value(DEFAULT_ACHIEVED.booleanValue()))
+            .andExpect(jsonPath("$.gratefulNote").value(DEFAULT_GRATEFUL_NOTE.toString()));
     }
 
     @Test
@@ -222,10 +206,10 @@ class GratitudeResourceIT {
         // Disconnect from session so that the updates on updatedGratitude are not directly saved in db
         em.detach(updatedGratitude);
         updatedGratitude
-            .gratefulNote(UPDATED_GRATEFUL_NOTE)
             .createdDate(UPDATED_CREATED_DATE)
             .loved(UPDATED_LOVED)
-            .achieved(UPDATED_ACHIEVED);
+            .achieved(UPDATED_ACHIEVED)
+            .gratefulNote(UPDATED_GRATEFUL_NOTE);
 
         restGratitudeMockMvc
             .perform(
@@ -239,10 +223,10 @@ class GratitudeResourceIT {
         List<Gratitude> gratitudeList = gratitudeRepository.findAll();
         assertThat(gratitudeList).hasSize(databaseSizeBeforeUpdate);
         Gratitude testGratitude = gratitudeList.get(gratitudeList.size() - 1);
-        assertThat(testGratitude.getGratefulNote()).isEqualTo(UPDATED_GRATEFUL_NOTE);
         assertThat(testGratitude.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
         assertThat(testGratitude.getLoved()).isEqualTo(UPDATED_LOVED);
         assertThat(testGratitude.getAchieved()).isEqualTo(UPDATED_ACHIEVED);
+        assertThat(testGratitude.getGratefulNote()).isEqualTo(UPDATED_GRATEFUL_NOTE);
     }
 
     @Test
@@ -313,7 +297,7 @@ class GratitudeResourceIT {
         Gratitude partialUpdatedGratitude = new Gratitude();
         partialUpdatedGratitude.setId(gratitude.getId());
 
-        partialUpdatedGratitude.achieved(UPDATED_ACHIEVED);
+        partialUpdatedGratitude.gratefulNote(UPDATED_GRATEFUL_NOTE);
 
         restGratitudeMockMvc
             .perform(
@@ -327,10 +311,10 @@ class GratitudeResourceIT {
         List<Gratitude> gratitudeList = gratitudeRepository.findAll();
         assertThat(gratitudeList).hasSize(databaseSizeBeforeUpdate);
         Gratitude testGratitude = gratitudeList.get(gratitudeList.size() - 1);
-        assertThat(testGratitude.getGratefulNote()).isEqualTo(DEFAULT_GRATEFUL_NOTE);
         assertThat(testGratitude.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
         assertThat(testGratitude.getLoved()).isEqualTo(DEFAULT_LOVED);
-        assertThat(testGratitude.getAchieved()).isEqualTo(UPDATED_ACHIEVED);
+        assertThat(testGratitude.getAchieved()).isEqualTo(DEFAULT_ACHIEVED);
+        assertThat(testGratitude.getGratefulNote()).isEqualTo(UPDATED_GRATEFUL_NOTE);
     }
 
     @Test
@@ -346,10 +330,10 @@ class GratitudeResourceIT {
         partialUpdatedGratitude.setId(gratitude.getId());
 
         partialUpdatedGratitude
-            .gratefulNote(UPDATED_GRATEFUL_NOTE)
             .createdDate(UPDATED_CREATED_DATE)
             .loved(UPDATED_LOVED)
-            .achieved(UPDATED_ACHIEVED);
+            .achieved(UPDATED_ACHIEVED)
+            .gratefulNote(UPDATED_GRATEFUL_NOTE);
 
         restGratitudeMockMvc
             .perform(
@@ -363,10 +347,10 @@ class GratitudeResourceIT {
         List<Gratitude> gratitudeList = gratitudeRepository.findAll();
         assertThat(gratitudeList).hasSize(databaseSizeBeforeUpdate);
         Gratitude testGratitude = gratitudeList.get(gratitudeList.size() - 1);
-        assertThat(testGratitude.getGratefulNote()).isEqualTo(UPDATED_GRATEFUL_NOTE);
         assertThat(testGratitude.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
         assertThat(testGratitude.getLoved()).isEqualTo(UPDATED_LOVED);
         assertThat(testGratitude.getAchieved()).isEqualTo(UPDATED_ACHIEVED);
+        assertThat(testGratitude.getGratefulNote()).isEqualTo(UPDATED_GRATEFUL_NOTE);
     }
 
     @Test

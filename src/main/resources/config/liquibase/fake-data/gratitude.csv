@@ -1,11 +1,11 @@
-id;grateful_note;created_date;loved;achieved
-1;Soft;2021-03-31T20:36:54;false;true
-2;Wooden Borders Incredible;2021-03-31T15:35:33;true;false
-3;Unbranded Bedfordshire;2021-03-31T15:07:20;true;false
-4;digital;2021-03-31T23:44:21;false;false
-5;Uzbekistan Cordoba SQL;2021-03-31T22:00:10;false;false
-6;Health payment;2021-04-01T08:39:20;true;true
-7;monetize productivity;2021-03-31T14:33:51;false;false
-8;copying;2021-03-31T16:30:17;false;false
-9;Account transmit driver;2021-03-31T22:52:49;true;false
-10;interactive Franc;2021-04-01T08:24:48;false;false
+id;created_date;loved;achieved;grateful_note
+1;2021-04-01;false;false;../fake-data/blob/hipster.txt
+2;2021-03-31;false;true;../fake-data/blob/hipster.txt
+3;2021-03-31;false;true;../fake-data/blob/hipster.txt
+4;2021-03-31;false;false;../fake-data/blob/hipster.txt
+5;2021-04-01;true;false;../fake-data/blob/hipster.txt
+6;2021-04-01;true;true;../fake-data/blob/hipster.txt
+7;2021-04-01;false;false;../fake-data/blob/hipster.txt
+8;2021-03-31;false;true;../fake-data/blob/hipster.txt
+9;2021-03-31;false;true;../fake-data/blob/hipster.txt
+10;2021-04-01;true;false;../fake-data/blob/hipster.txt

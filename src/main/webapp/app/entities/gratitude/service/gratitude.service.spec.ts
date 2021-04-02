@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as dayjs from 'dayjs';
 
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { IGratitude, Gratitude } from '../gratitude.model';
 
 import { GratitudeService } from './gratitude.service';
@@ -26,10 +26,10 @@ describe('Service Tests', () => {
 
       elemDefault = {
         id: 0,
-        gratefulNote: 'AAAAAAA',
         createdDate: currentDate,
         loved: false,
         achieved: false,
+        gratefulNote: 'AAAAAAA',
       };
     });
 
@@ -37,7 +37,7 @@ describe('Service Tests', () => {
       it('should find an element', () => {
         const returnedFromService = Object.assign(
           {
-            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            createdDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -53,7 +53,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
-            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            createdDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -76,10 +76,10 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            gratefulNote: 'BBBBBB',
-            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            createdDate: currentDate.format(DATE_FORMAT),
             loved: true,
             achieved: true,
+            gratefulNote: 'BBBBBB',
           },
           elemDefault
         );
@@ -101,7 +101,7 @@ describe('Service Tests', () => {
       it('should partial update a Gratitude', () => {
         const patchObject = Object.assign(
           {
-            achieved: true,
+            gratefulNote: 'BBBBBB',
           },
           new Gratitude()
         );
@@ -126,10 +126,10 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            gratefulNote: 'BBBBBB',
-            createdDate: currentDate.format(DATE_TIME_FORMAT),
+            createdDate: currentDate.format(DATE_FORMAT),
             loved: true,
             achieved: true,
+            gratefulNote: 'BBBBBB',
           },
           elemDefault
         );

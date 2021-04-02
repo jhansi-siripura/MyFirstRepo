@@ -1,11 +1,22 @@
 <div>
   <h2 id="page-heading" data-cy="GratitudeHeading">
-    <span>Gratitudes</span>
+    <span>Gratitude</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh List</span>
+      <button class="btn btn-info mr-2">
+        <span>Todays List</span>
+      </button>
+
+      <button class="btn btn-info mr-2">
+        <span>Yesterdays List</span>
+      </button>
+
+      <button class="btn btn-info mr-2">
+        <span>Loved List</span>
+      </button>
+
+      <button class="btn btn-info mr-2">
+        <span>Achievements</span>
       </button>
 
       <button
@@ -24,6 +35,8 @@
 
   <jhi-alert></jhi-alert>
 
+  <jhi-gratitude-today></jhi-gratitude-today>
+
   <div class="alert alert-warning" id="no-result" *ngIf="gratitudes?.length === 0">
     <span>No gratitudes found</span>
   </div>
@@ -37,6 +50,7 @@
           <th scope="col" jhiSortBy="createdDate"><span>Created Date</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="loved"><span>Loved</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="achieved"><span>Achieved</span> <fa-icon icon="sort"></fa-icon></th>
+
           <th scope="col"></th>
         </tr>
       </thead>
@@ -46,9 +60,10 @@
             <a [routerLink]="['/gratitude', gratitude.id, 'view']">{{ gratitude.id }}</a>
           </td>
           <td>{{ gratitude.gratefulNote }}</td>
-          <td>{{ gratitude.createdDate | formatMediumDatetime }}</td>
+          <td>{{ gratitude.createdDate | formatMediumDate }}</td>
           <td>{{ gratitude.loved }}</td>
           <td>{{ gratitude.achieved }}</td>
+
           <td class="text-right">
             <div class="btn-group">
               <button

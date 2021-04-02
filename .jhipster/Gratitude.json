@@ -2,11 +2,6 @@
   "name": "Gratitude",
   "fields": [
     {
-      "fieldName": "gratefulNote",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "createdDate",
       "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
@@ -18,6 +13,12 @@
     {
       "fieldName": "achieved",
       "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "gratefulNote",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [],

@@ -1,6 +1,6 @@
 entity Gratitude {
 	gratefulNote String required,
-    createdDate Instant required,
+    createdDate LocalDate required,
     loved Boolean,
     achieved Boolean
 
@@ -8,9 +8,9 @@ entity Gratitude {
 
 
 entity TradeWish {
-	twish Integer required,
+	tradeWishNote Integer required,
     picked Boolean,
-    pickedDate Instant required
+    pickedDate LocalDate required
 }
 
 
