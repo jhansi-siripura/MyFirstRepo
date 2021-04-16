@@ -393,27 +393,27 @@ public class TradeSuggestion implements Serializable {
     @Override
     public String toString() {
         return "TradeSuggestion{" +
-            "id=" + getId() +
-            ", action='" + getAction() + "'" +
-            ", tradeInPrice=" + getTradeInPrice() +
-            ", minTradeOutPrice=" + getMinTradeOutPrice() +
-            ", minProfitPoints=" + getMinProfitPoints() +
-            ", betterTradeoutPrice=" + getBetterTradeoutPrice() +
-            ", betterTradeOutProfitPoints=" + getBetterTradeOutProfitPoints() +
-            ", actualTradeoutPrice=" + getActualTradeoutPrice() +
-            ", actualProfitPoints=" + getActualProfitPoints() +
-            ", slPoints=" + getSlPoints() +
-            ", tradeStatus='" + getTradeStatus() + "'" +
-            ", tradeResults='" + getTradeResults() + "'" +
-            ", tradeInTime='" + getTradeInTime() + "'" +
-            ", tradeOutTime='" + getTradeOutTime() + "'" +
-            ", tradeDuration=" + getTradeDuration() +
-            ", tradeDate='" + getTradeDate() + "'" +
-            ", tradeSuggestionTime='" + getTradeSuggestionTime() + "'" +
-            ", tradeType='" + getTradeType() + "'" +
-            ", actualPL=" + getActualPL() +
-            ", slPrice=" + getSlPrice() +
-            ", currentMarketPrice=" + getCurrentMarketPrice() +
+            "\nid=" + getId() +
+            "\n, action='" + getAction() + "'" +
+            "\n, tradeInPrice=" + getTradeInPrice() +
+            "\n, minTradeOutPrice=" + getMinTradeOutPrice() +
+            "\n, minProfitPoints=" + getMinProfitPoints() +
+            "\n, betterTradeoutPrice=" + getBetterTradeoutPrice() +
+            "\n, betterTradeOutProfitPoints=" + getBetterTradeOutProfitPoints() +
+            "\n, actualTradeoutPrice=" + getActualTradeoutPrice() +
+            "\n, actualProfitPoints=" + getActualProfitPoints() +
+            "\n, slPoints=" + getSlPoints() +
+            "\n, tradeStatus='" + getTradeStatus() + "'" +
+            "\n, tradeResults='" + getTradeResults() + "'" +
+            "\n, tradeInTime='" + getTradeInTime() + "'" +
+            "\n, tradeOutTime='" + getTradeOutTime() + "'" +
+            "\n, tradeDuration=" + getTradeDuration() +
+            "\n, tradeDate='" + getTradeDate() + "'" +
+            "\n, tradeSuggestionTime='" + getTradeSuggestionTime() + "'" +
+            "\n, tradeType='" + getTradeType() + "'" +
+            "\n, actualPL=" + getActualPL() +
+            "\n, slPrice=" + getSlPrice() +
+            "\n, currentMarketPrice=" + getCurrentMarketPrice() +
             "}";
     }
 }
